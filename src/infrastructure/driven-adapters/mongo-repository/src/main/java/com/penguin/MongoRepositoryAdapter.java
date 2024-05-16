@@ -24,9 +24,10 @@ public class MongoRepositoryAdapter implements DomainEventRepository {
         Event eventStore = new Event();
         System.out.println("Event: " + event.aggregateRootId());
         eventStore.setAggregateRootId(event.aggregateRootId());
-        eventStore.setEventBody(event.toString());
+        eventStore.setEventBody(eventStore.mapperEventBody(event));
         eventStore.setOccurredOn(new Date());
         eventStore.setTypeName(event.getClass().getTypeName());
+        System.out.println(eventStore.getEventBody());
         return template.save(eventStore)
                 .map(eventStored -> event);
     }
