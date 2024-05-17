@@ -1,11 +1,10 @@
 package com.penguin.model.bookStoreQuotes.commands;
 
-import com.penguin.model.bookStoreQuotes.values.identities.BookStoreQuoteId;
 import com.penguin.model.generic.Command;
 
 public class SaveBookCommand extends Command {
 
-    private BookStoreQuoteId bookStoreQuoteId;
+    private String bookStoreQuoteId;
     private String title;
     private String author;
     private Integer stock;
@@ -16,11 +15,11 @@ public class SaveBookCommand extends Command {
     public SaveBookCommand() {
     }
 
-    public BookStoreQuoteId getBookStoreQuoteId() {
+    public String getBookStoreQuoteId() {
         return bookStoreQuoteId;
     }
 
-    public void setBookStoreQuoteId(BookStoreQuoteId bookStoreQuoteId) {
+    public void setBookStoreQuoteId(String bookStoreQuoteId) {
         this.bookStoreQuoteId = bookStoreQuoteId;
     }
 

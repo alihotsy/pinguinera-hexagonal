@@ -5,7 +5,6 @@ include ':useCase'
 include ':mongo-repository'
 include ':reactive-web'
 include ':app-main'
-include ':serializer'
 
 project(':model').projectDir = file('./src/domain/model')
 project(':useCase').projectDir = file('./src/domain/useCase')

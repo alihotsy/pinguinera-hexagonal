@@ -1,5 +1,6 @@
 package com.penguin.model.bookStoreQuotes.entity;
 
+import com.penguin.model.bookStoreQuotes.values.BookStoreQuotes.TotalIncrement;
 import com.penguin.model.bookStoreQuotes.values.copy.*;
 import com.penguin.model.bookStoreQuotes.values.identities.CopyId;
 import com.penguin.model.generic.Entity;
@@ -11,7 +12,10 @@ public abstract class Copy extends Entity<CopyId> {
     private final Stock stock;
     private final PublicationYear publicationYear;
     private Price price;
-
+    private Type type;
+    private TotalIncrement increment;
+    private DiscountMayor discountMayor;
+    private DiscountCustomer discountCustomer;
 
     public Copy(Title title, Author author, Stock stock, Price price, PublicationYear publicationYear) {
         super(new CopyId());

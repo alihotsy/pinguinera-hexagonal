@@ -36,4 +36,12 @@ public class Event {
         }
     }
 
+    public Object readFromJson(String json, Class<?> clazz) {
+        try {
+            return mapper.readValue(json, clazz);
+        } catch (JsonProcessingException | ClassCastException e) {
+            return "Error reading from JSON";
+        }
+    }
+
 }
