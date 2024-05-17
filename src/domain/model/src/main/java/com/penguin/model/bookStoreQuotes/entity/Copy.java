@@ -39,4 +39,52 @@ public abstract class Copy extends Entity<CopyId> {
     public void setPrice(Price price) {
         this.price = price;
     }
+
+    public Title getTitle() {
+        return title;
+    }
+
+    public Author getAuthor() {
+        return author;
+    }
+
+    public Stock getStock() {
+        return stock;
+    }
+
+    public PublicationYear getPublicationYear() {
+        return publicationYear;
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public TotalIncrement getIncrement() {
+        return increment;
+    }
+
+    public void setIncrement(TotalIncrement increment) {
+        this.increment = increment;
+    }
+
+    public DiscountMayor getDiscountMayor() {
+        return discountMayor;
+    }
+
+    public void setDiscountMayor(DiscountMayor discountMayor) {
+        this.discountMayor = discountMayor;
+    }
+
+    public DiscountCustomer getDiscountCustomer() {
+        return discountCustomer;
+    }
+
+    public void setDiscountCustomer(DiscountCustomer discountCustomer) {
+        this.discountCustomer = discountCustomer;
+    }
 }

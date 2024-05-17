@@ -4,8 +4,9 @@ import com.penguin.model.bookStoreQuotes.values.copy.*;
 
 public class Book extends Copy{
 
-    public Book(Title title, Author author, Stock stock, Price price, PublicationYear publicationYear) {
+    private Book(Title title, Author author, Stock stock, Price price, PublicationYear publicationYear) {
         super(title, author, stock, price, publicationYear);
+        calculateIndividualPrice();
     }
 
     public static Book from(

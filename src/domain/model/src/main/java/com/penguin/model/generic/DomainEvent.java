@@ -6,12 +6,15 @@ import java.util.UUID;
 
 public abstract class DomainEvent implements Serializable {
 
-    public final Instant when;
-    public final UUID uuid;
-    public final String type;
+    public Instant when;
+    public UUID uuid;
+    public String type;
     private String aggregateRootId;
     private String aggregate;
     private Long versionType;
+
+    public DomainEvent() {
+    }
 
     public DomainEvent(String type) {
         this.type = type;
@@ -19,6 +22,15 @@ public abstract class DomainEvent implements Serializable {
         this.when = Instant.now();
         this.uuid = UUID.randomUUID();
         this.versionType = 1L;
+    }
+
+    public DomainEvent(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType) {
+        this.when = when;
+        this.uuid = uuid;
+        this.type = type;
+        this.aggregateRootId = aggregateRootId;
+        this.aggregate = aggregate;
+        this.versionType = versionType;
     }
 
     public Long versionType(){

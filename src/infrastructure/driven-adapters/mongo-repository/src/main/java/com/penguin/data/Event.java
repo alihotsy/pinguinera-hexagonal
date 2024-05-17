@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import com.penguin.JSONMapper;
 import com.penguin.model.generic.DomainEvent;
 import lombok.Getter;
 import lombok.Setter;
@@ -35,13 +36,16 @@ public class Event {
             return "Error writing to JSON";
         }
     }
-
-    public Object readFromJson(String json, Class<?> clazz) {
+    public static String wrapEvent(DomainEvent domainEvent, JSONMapper eventSerializer){
+        return eventSerializer.writeToJson(domainEvent);
+    }
+    public DomainEvent deserializeEvent(JSONMapper eventSerializer) {
         try {
-            return mapper.readValue(json, clazz);
-        } catch (JsonProcessingException | ClassCastException e) {
-            return "Error reading from JSON";
+            System.out.println("Event Body: " + this.getEventBody());
+            return (DomainEvent) eventSerializer
+                    .readFromJson(this.getEventBody(), Class.forName(this.getTypeName()));
+        } catch (ClassNotFoundException e) {
+            return null;
         }
     }
-
 }

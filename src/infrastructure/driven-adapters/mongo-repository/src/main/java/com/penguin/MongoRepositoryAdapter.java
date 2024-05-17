@@ -7,19 +7,22 @@ import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Comparator;
 import java.util.Date;
 
-@Component
+@Repository
 public class MongoRepositoryAdapter implements DomainEventRepository {
 
     private final ReactiveMongoTemplate template;
+    private final JSONMapper eventSerializer;
 
-    public MongoRepositoryAdapter(ReactiveMongoTemplate template) {
+    public MongoRepositoryAdapter(ReactiveMongoTemplate template, JSONMapper eventSerializer) {
         this.template = template;
+        this.eventSerializer = eventSerializer;
     }
 
     @Override
@@ -35,8 +38,12 @@ public class MongoRepositoryAdapter implements DomainEventRepository {
 
     @Override
     public Flux<DomainEvent> findById(String aggregateId) {
+        System.out.println(aggregateId);
         return template.find(new Query(Criteria.where("aggregateRootId").is(aggregateId)), Event.class)
                 .sort(Comparator.comparing(Event::getOccurredOn))
-                .map(storedEvent -> storedEvent.mapperEventBody(storedEvent));
+                .map(storedEvent -> {
+                    System.out.println(storedEvent.getEventBody());
+                    return storedEvent.deserializeEvent(eventSerializer);
+                });
     }
 }

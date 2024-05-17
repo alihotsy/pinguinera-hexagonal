@@ -2,8 +2,12 @@ package com.penguin.model.bookStoreQuotes.events;
 
 import com.penguin.model.generic.DomainEvent;
 
+import java.time.Instant;
+import java.util.UUID;
+
 public class BookSaved extends DomainEvent {
 
+    private String bookstoreQuoteId;
     private String title;
     private String author;
     private Integer stock;
@@ -19,6 +23,29 @@ public class BookSaved extends DomainEvent {
         this.publicationYear = publicationYear;
         this.price = price;
         this.type = type;
+    }
+
+    public BookSaved() {
+        super();
+    }
+
+    public BookSaved(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType, String bookstoreQuoteId, String title, String author, Integer stock, Integer publicationYear, Double price) {
+        super(when, uuid, type, aggregateRootId, aggregate, versionType);
+        this.bookstoreQuoteId = bookstoreQuoteId;
+        this.title = title;
+        this.author = author;
+        this.stock = stock;
+        this.publicationYear = publicationYear;
+        this.price = price;
+        this.type = type;
+    }
+
+    public String getBookstoreQuoteId() {
+        return bookstoreQuoteId;
+    }
+
+    public void setBookstoreQuoteId(String bookstoreQuoteId) {
+        this.bookstoreQuoteId = bookstoreQuoteId;
     }
 
     public String getTitle() {
