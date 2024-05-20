@@ -1,0 +1,119 @@
+package com.penguin.model.provider;
+import com.google.common.collect.Range;
+import com.google.common.collect.RangeMap;
+import com.google.common.collect.TreeRangeMap;
+import com.penguin.model.provider.dto.LiteraryWork;
+import com.penguin.model.provider.entity.Copy;
+import com.penguin.model.provider.events.BookSaved;
+import com.penguin.model.provider.events.CalculatedBill;
+import com.penguin.model.provider.values.copy.*;
+import com.penguin.model.provider.values.identities.ProviderId;
+import com.penguin.model.generic.AggregateRoot;
+import com.penguin.model.generic.DomainEvent;
+
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+public class Provider extends AggregateRoot<ProviderId> {
+
+    protected List<Copy> copies;
+
+    protected Map<LiteraryWork, Integer> copyStock;
+    protected Copy result;
+
+    private Provider(ProviderId providerId) {
+        super(providerId);
+        //subscribe(new BookStoreQuotesEventChange(this));
+    }
+
+    public Provider(Title title,
+                    Author author,
+                    Stock stock,
+                    PublicationYear publicationYear,
+                    Price price,
+                    Type type) {
+        super(new ProviderId());
+        subscribe(new ProviderBehavior(this));
+        appendChange(new BookSaved(
+                identity().value(),
+                title.value(),
+                author.value(),
+                stock.value(),
+                publicationYear.value(),
+                price.value(),
+                type.value())).apply();
+    }
+
+    public void addCopy(Title title,
+                        Author author,
+                        Stock stock,
+                        PublicationYear publicationYear,
+                        Price price,
+                        Type type) {
+        subscribe(new ProviderBehavior(this));
+        appendChange(new BookSaved(
+                identity().value(),
+                title.value(),
+                author.value(),
+                stock.value(),
+                publicationYear.value(),
+                price.value(), type.value())).apply();
+    }
+
+    public void addCopiesStock(Map<LiteraryWork, Integer> copyStock, LocalDate registeredAt) {
+        subscribe(new ProviderBehavior(this));
+        this.copyStock = copyStock;
+        appendChange(new CalculatedBill(copyStock, registeredAt)).apply();
+    }
+
+    public Copy getResult() {
+        return result;
+    }
+
+    public void setResult(Copy result) {
+        this.result = result;
+    }
+
+    public static Provider from(ProviderId providerId, List<DomainEvent> events) {
+        var bookStoreQuotes = new Provider(providerId);
+        events.forEach(bookStoreQuotes::applyEvent);
+        return bookStoreQuotes;
+    }
+
+    public double discountBySeniority(double totalPrice, LocalDate registeredAt) {
+        LocalDate today = LocalDate.now();
+        Period period = Period.between(registeredAt, today);
+        double years = period.getYears() + period.getMonths() / 12.0;
+
+        RangeMap<Double, Double> discount = TreeRangeMap.create();
+        discount.put(Range.closedOpen(0.0,1.0), totalPrice);
+        discount.put(Range.closed(1.0,2.0), totalPrice - totalPrice*0.12);
+        discount.put(Range.greaterThan(2.0), totalPrice - totalPrice*0.17);
+
+        return discount.get(years);
+
+    }
+
+    public double totalPriceForAllCopiesOfOneBook(Integer quantity, LiteraryWork copy) {
+        if(quantity > copy.getCopies()) {
+            throw new IllegalArgumentException("quantity exceeds than copy in stock");
+        }
+        if(quantity > 10) {
+            final int COPIES_EXCLUDED = 10;
+            int copiesForDiscount = quantity - COPIES_EXCLUDED;
+            //System.out.println(copiesForDiscount);
+            double totalDiscount = copiesForDiscount*0.0015;
+            //book.getPrice()*10
+            if(totalDiscount > 1) {
+                totalDiscount = 0.99;
+            }
+
+            return (copy.getPrice() + copy.getPrice()*0.02)*COPIES_EXCLUDED + copiesForDiscount*(copy.getPrice() - copy.getPrice()*totalDiscount);
+        }
+        //book.getPrice()*book.getCopiesOfTheBook()
+        return (copy.getPrice() + copy.getPrice()*0.02)*quantity;
+    }
+}

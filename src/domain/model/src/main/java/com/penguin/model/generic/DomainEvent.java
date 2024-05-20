@@ -24,6 +24,7 @@ public abstract class DomainEvent implements Serializable {
         this.versionType = 1L;
     }
 
+
     public DomainEvent(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType) {
         this.when = when;
         this.uuid = uuid;
@@ -54,5 +55,17 @@ public abstract class DomainEvent implements Serializable {
 
     public void setAggregateName(String aggregateName){
         this.aggregate = aggregateName;
+    }
+
+    @Override
+    public String toString() {
+        return "DomainEvent{" +
+                "when=" + when +
+                ", uuid=" + uuid +
+                ", type='" + type + '\'' +
+                ", aggregateRootId='" + aggregateRootId + '\'' +
+                ", aggregate='" + aggregate + '\'' +
+                ", versionType=" + versionType +
+                '}';
     }
 }

@@ -41,7 +41,7 @@ public class Event {
     }
     public DomainEvent deserializeEvent(JSONMapper eventSerializer) {
         try {
-            System.out.println("Event Body: " + this.getEventBody());
+            System.out.println("Type name" +this.getTypeName());
             return (DomainEvent) eventSerializer
                     .readFromJson(this.getEventBody(), Class.forName(this.getTypeName()));
         } catch (ClassNotFoundException e) {

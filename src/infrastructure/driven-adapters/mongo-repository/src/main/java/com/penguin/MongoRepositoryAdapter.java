@@ -3,6 +3,7 @@ package com.penguin;
 import com.penguin.data.Event;
 import com.penguin.gateways.DomainEventRepository;
 import com.penguin.model.generic.DomainEvent;
+import org.bson.types.ObjectId;
 import org.springframework.data.mongodb.core.ReactiveMongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -29,18 +30,28 @@ public class MongoRepositoryAdapter implements DomainEventRepository {
     public Mono<DomainEvent> saveEvent(DomainEvent event) {
         Event eventStore = new Event();
         eventStore.setAggregateRootId(event.aggregateRootId());
-        eventStore.setEventBody(eventStore.mapperEventBody(event));
+        eventStore.setEventBody(Event.wrapEvent(event,eventSerializer));
         eventStore.setOccurredOn(new Date());
         eventStore.setTypeName(event.getClass().getTypeName());
         return template.save(eventStore)
-                .map(eventStored -> event);
+                .map(eventStored -> eventStore.deserializeEvent(eventSerializer));
     }
 
     @Override
     public Flux<DomainEvent> findById(String aggregateId) {
-        System.out.println(aggregateId);
+
+        System.out.println("AGREGATE "+aggregateId);
         return template.find(new Query(Criteria.where("aggregateRootId").is(aggregateId)), Event.class)
                 .sort(Comparator.comparing(Event::getOccurredOn))
+                .map(storedEvent -> {
+                    System.out.println("FOUND: "+storedEvent.getEventBody());
+                    return storedEvent.deserializeEvent(eventSerializer);
+                });
+    }
+
+    @Override
+    public Mono<DomainEvent> findByEventId(String eventId) {
+        return template.findById(eventId, Event.class)
                 .map(storedEvent -> {
                     System.out.println(storedEvent.getEventBody());
                     return storedEvent.deserializeEvent(eventSerializer);

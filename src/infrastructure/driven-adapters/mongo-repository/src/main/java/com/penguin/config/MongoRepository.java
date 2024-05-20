@@ -6,4 +6,4 @@
 //import org.springframework.stereotype.Repository;
 //
 //@Repository
-//public interface MongoRepository extends ReactiveMongoRepository<ObjectId, Event> { }
+//public interface MongoRepository extends ReactiveMongoRepository<Event,String> { }
