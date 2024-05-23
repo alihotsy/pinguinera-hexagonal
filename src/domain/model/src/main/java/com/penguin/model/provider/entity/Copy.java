@@ -6,22 +6,24 @@ import com.penguin.model.generic.Entity;
 
 public abstract class Copy extends Entity<CopyId> {
 
-    private Type type;
-    private final Title title;
-    private final Author author;
-    private final Stock stock;
-    private final PublicationYear publicationYear;
+    private BookType bookType;
+    private Title title;
+    private Author author;
+    private AreaOfKnowledge areaOfKnowledge;
+    private NumOfPages numOfPages;
+    private CopiesOfTheBook copiesOfTheBook;
     private Price price;
 
 
-    public Copy(Type type,Title title, Author author, Stock stock, Price price, PublicationYear publicationYear) {
+    public Copy(BookType bookType, Title title, Author author, AreaOfKnowledge areaOfKnowledge, NumOfPages numOfPages, CopiesOfTheBook copiesOfTheBook, Price price) {
         super(new CopyId());
-        this.type = type;
+        this.bookType = bookType;
         this.title = title;
         this.author = author;
-        this.stock = stock;
+        this.areaOfKnowledge = areaOfKnowledge;
+        this.numOfPages = numOfPages;
+        this.copiesOfTheBook = copiesOfTheBook;
         this.price = price;
-        this.publicationYear = publicationYear;
     }
 
     public abstract void calculateIndividualPrice();
@@ -46,21 +48,37 @@ public abstract class Copy extends Entity<CopyId> {
         return author.value();
     }
 
-    public Integer getStock() {
-        return stock.value();
+
+    public String getAreaOfKnowledge() {
+        return areaOfKnowledge.value();
     }
 
-    public Integer getPublicationYear() {
-        return publicationYear.value();
-    }
 
     public String getType() {
-        return type.value();
+        return bookType.value();
     }
 
-    public void setType(Type type) {
-        this.type = type;
+    public Integer getNumOfPages() {
+        return numOfPages.value();
     }
 
+    public Integer getCopiesOfTheBook() {
+        return copiesOfTheBook.value();
+    }
 
+    public void setType(BookType bookType) {
+        this.bookType = bookType;
+    }
+
+    public void setAreaOfKnowledge(AreaOfKnowledge areaOfKnowledge) {
+        this.areaOfKnowledge = areaOfKnowledge;
+    }
+
+    public void setNumOfPages(NumOfPages numOfPages) {
+        this.numOfPages = numOfPages;
+    }
+
+    public void setBookType(BookType bookType) {
+        this.bookType = bookType;
+    }
 }

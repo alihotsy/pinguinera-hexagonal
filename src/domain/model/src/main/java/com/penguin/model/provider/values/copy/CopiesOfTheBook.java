@@ -4,11 +4,11 @@ import com.penguin.model.generic.ValueObject;
 
 import java.util.Objects;
 
-public class Stock implements ValueObject<Integer> {
+public class CopiesOfTheBook implements ValueObject<Integer> {
 
     private final Integer stock;
 
-    public Stock(Integer stock) {
+    public CopiesOfTheBook(Integer stock) {
         if(Objects.isNull(stock)) {
             throw new IllegalArgumentException("Copies must not be null");
         }

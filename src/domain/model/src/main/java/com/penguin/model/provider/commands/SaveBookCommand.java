@@ -5,12 +5,13 @@ import com.penguin.model.generic.Command;
 public class SaveBookCommand extends Command {
 
     private String bookStoreQuoteId;
+    private String bookType;
     private String title;
     private String author;
-    private Integer stock;
-    private Integer publicationYear;
+    private String areaOfKnowledge;
+    private Integer numOfPages;
+    private Integer copiesOfTheBook;
     private Double price;
-    private String type;
 
     public SaveBookCommand() {
     }
@@ -39,21 +40,14 @@ public class SaveBookCommand extends Command {
         this.author = author;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Integer getCopiesOfTheBook() {
+        return copiesOfTheBook;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
+    public void setCopiesOfTheBook(Integer copiesOfTheBook) {
+        this.copiesOfTheBook = copiesOfTheBook;
     }
 
-    public Integer getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(Integer publicationYear) {
-        this.publicationYear = publicationYear;
-    }
 
     public Double getPrice() {
         return price;
@@ -63,11 +57,27 @@ public class SaveBookCommand extends Command {
         this.price = price;
     }
 
-    public String getType() {
-        return type;
+    public String getBookType() {
+        return bookType;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
+
+    public String getAreaOfKnowledge() {
+        return areaOfKnowledge;
+    }
+
+    public void setAreaOfKnowledge(String areaOfKnowledge) {
+        this.areaOfKnowledge = areaOfKnowledge;
+    }
+
+    public Integer getNumOfPages() {
+        return numOfPages;
+    }
+
+    public void setNumOfPages(Integer numOfPages) {
+        this.numOfPages = numOfPages;
     }
 }

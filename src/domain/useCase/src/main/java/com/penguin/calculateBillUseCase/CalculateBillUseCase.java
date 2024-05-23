@@ -3,7 +3,6 @@ package com.penguin.calculateBillUseCase;
 import com.penguin.gateways.DomainEventRepository;
 import com.penguin.generic.CommandUseCase;
 import com.penguin.model.provider.Provider;
-import com.penguin.model.provider.commands.BookItemCommand;
 import com.penguin.model.provider.commands.CalculateBillCommand;
 import com.penguin.model.provider.dto.LiteraryWork;
 import com.penguin.model.provider.entity.Copy;
@@ -18,9 +17,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 public class CalculateBillUseCase extends CommandUseCase<CalculateBillCommand> {
 
@@ -66,12 +63,14 @@ public class CalculateBillUseCase extends CommandUseCase<CalculateBillCommand> {
                         String uuid = domainEvent.uuid.toString();
                         BookSaved bookSaved = (BookSaved) domainEvent;
 
+
                         Copy copy = copyFactory.createCopy(
-                                new Type(bookSaved.getType()),
+                                new BookType(bookSaved.getType()),
                                 new Title(bookSaved.getTitle()),
                                 new Author(bookSaved.getAuthor()),
-                                new Stock(bookSaved.getStock()),
-                                new PublicationYear(bookSaved.getPublicationYear()),
+                                new AreaOfKnowledge(bookSaved.getAreaOfKnowledge()),
+                                new NumOfPages(bookSaved.getNumOfPages()),
+                                new CopiesOfTheBook(bookSaved.getCopiesOfTheBook()),
                                 new Price(bookSaved.getPrice())
                         );
 

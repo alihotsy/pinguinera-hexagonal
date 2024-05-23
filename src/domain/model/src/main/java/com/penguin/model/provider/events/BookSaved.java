@@ -10,17 +10,18 @@ public class BookSaved extends DomainEvent {
     private String bookStoreQuoteId;
     private String title;
     private String author;
-    private Integer stock;
-    private Integer publicationYear;
+    private String areaOfKnowledge;
+    private Integer numOfPages;
+    private Integer copiesOfTheBook;
     private Double price;
-    private String type;
 
-    public BookSaved(String bookStoreQuoteId,String title, String author, Integer stock, Integer publicationYear, Double price, String type) {
+    public BookSaved(String bookStoreQuoteId,String title, String author, String areaOfKnowledge,Integer numOfPages,Integer copiesOfTheBook, Double price, String type) {
         super(TypeEvent.BOOK_SAVED.toString());
         this.title = title;
         this.author = author;
-        this.stock = stock;
-        this.publicationYear = publicationYear;
+        this.areaOfKnowledge = areaOfKnowledge;
+        this.numOfPages = numOfPages;
+        this.copiesOfTheBook = copiesOfTheBook;
         this.price = price;
         this.type = type;
         this.bookStoreQuoteId = bookStoreQuoteId;
@@ -30,13 +31,14 @@ public class BookSaved extends DomainEvent {
         super();
     }
 
-    public BookSaved(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType, String bookstoreQuoteId, String title, String author, Integer stock, Integer publicationYear, Double price) {
+    public BookSaved(Instant when, UUID uuid, String type, String aggregateRootId, String aggregate, Long versionType, String bookstoreQuoteId, String title, String author, String areaOfKnowledge, Integer numOfPages ,Integer copiesOfTheBook, Double price) {
         super(when, uuid, type, aggregateRootId, aggregate, versionType);
         this.bookStoreQuoteId = bookstoreQuoteId;
         this.title = title;
         this.author = author;
-        this.stock = stock;
-        this.publicationYear = publicationYear;
+        this.areaOfKnowledge = areaOfKnowledge;
+        this.numOfPages = numOfPages;
+        this.copiesOfTheBook = copiesOfTheBook;
         this.price = price;
         this.type = type;
     }
@@ -65,20 +67,12 @@ public class BookSaved extends DomainEvent {
         this.author = author;
     }
 
-    public Integer getStock() {
-        return stock;
+    public Integer getCopiesOfTheBook() {
+        return copiesOfTheBook;
     }
 
-    public void setStock(Integer stock) {
-        this.stock = stock;
-    }
-
-    public Integer getPublicationYear() {
-        return publicationYear;
-    }
-
-    public void setPublicationYear(Integer publicationYear) {
-        this.publicationYear = publicationYear;
+    public void setCopiesOfTheBook(Integer copiesOfTheBook) {
+        this.copiesOfTheBook = copiesOfTheBook;
     }
 
     public Double getPrice() {
@@ -97,14 +91,29 @@ public class BookSaved extends DomainEvent {
         this.type = type;
     }
 
+    public String getAreaOfKnowledge() {
+        return areaOfKnowledge;
+    }
+
+    public void setAreaOfKnowledge(String areaOfKnowledge) {
+        this.areaOfKnowledge = areaOfKnowledge;
+    }
+
+    public Integer getNumOfPages() {
+        return numOfPages;
+    }
+
+    public void setNumOfPages(Integer numOfPages) {
+        this.numOfPages = numOfPages;
+    }
+
     @Override
     public String toString() {
         return "BookSaved{" +
                 "bookStoreQuoteId='" + bookStoreQuoteId + '\'' +
                 ", title='" + title + '\'' +
                 ", author='" + author + '\'' +
-                ", stock=" + stock +
-                ", publicationYear=" + publicationYear +
+                ", stock=" + copiesOfTheBook +
                 ", price=" + price +
                 ", type='" + type + '\'' +
                 '}';

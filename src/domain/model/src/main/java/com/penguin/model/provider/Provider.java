@@ -2,10 +2,13 @@ package com.penguin.model.provider;
 import com.google.common.collect.Range;
 import com.google.common.collect.RangeMap;
 import com.google.common.collect.TreeRangeMap;
+import com.penguin.model.provider.dto.Bill;
 import com.penguin.model.provider.dto.LiteraryWork;
 import com.penguin.model.provider.entity.Copy;
 import com.penguin.model.provider.events.BookSaved;
 import com.penguin.model.provider.events.CalculatedBill;
+import com.penguin.model.provider.events.CalculatedBillGroup;
+import com.penguin.model.provider.events.CalculatedMaxWholeDiscount;
 import com.penguin.model.provider.values.copy.*;
 import com.penguin.model.provider.values.identities.ProviderId;
 import com.penguin.model.generic.AggregateRoot;
@@ -13,7 +16,6 @@ import com.penguin.model.generic.DomainEvent;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -29,44 +31,67 @@ public class Provider extends AggregateRoot<ProviderId> {
         //subscribe(new BookStoreQuotesEventChange(this));
     }
 
+
+
     public Provider(Title title,
                     Author author,
-                    Stock stock,
-                    PublicationYear publicationYear,
+                    AreaOfKnowledge areaOfKnowledge,
+                    NumOfPages numOfPages,
+                    CopiesOfTheBook copiesOfTheBook,
                     Price price,
-                    Type type) {
+                    BookType bookType) {
         super(new ProviderId());
         subscribe(new ProviderBehavior(this));
         appendChange(new BookSaved(
                 identity().value(),
                 title.value(),
                 author.value(),
-                stock.value(),
-                publicationYear.value(),
+                areaOfKnowledge.value(),
+                numOfPages.value(),
+                copiesOfTheBook.value(),
                 price.value(),
-                type.value())).apply();
+                bookType.value())).apply();
     }
 
     public void addCopy(Title title,
                         Author author,
-                        Stock stock,
-                        PublicationYear publicationYear,
+                        AreaOfKnowledge areaOfKnowledge,
+                        NumOfPages numOfPages,
+                        CopiesOfTheBook copiesOfTheBook,
                         Price price,
-                        Type type) {
+                        BookType bookType) {
         subscribe(new ProviderBehavior(this));
         appendChange(new BookSaved(
                 identity().value(),
                 title.value(),
                 author.value(),
-                stock.value(),
-                publicationYear.value(),
-                price.value(), type.value())).apply();
+                areaOfKnowledge.value(),
+                numOfPages.value(),
+                copiesOfTheBook.value(),
+                price.value(),
+                bookType.value())).apply();
     }
 
     public void addCopiesStock(Map<LiteraryWork, Integer> copyStock, LocalDate registeredAt) {
         subscribe(new ProviderBehavior(this));
         this.copyStock = copyStock;
         appendChange(new CalculatedBill(copyStock, registeredAt)).apply();
+    }
+
+    public void calculateMaxWholeSale(List<LiteraryWork> books, Double budget, LocalDate registeredAt) {
+        subscribe(new ProviderBehavior(this));
+        appendChange(new CalculatedMaxWholeDiscount(budget,books,registeredAt)).apply();
+    }
+
+    public void calculateBillGroup(List<Bill> bills) {
+        subscribe(new ProviderBehavior(this));
+        appendChange(new CalculatedBillGroup(bills)).apply();
+    }
+
+    public Integer calculateTotalCopies(List<LiteraryWork> books) {
+        return books.stream()
+                .map(LiteraryWork::getCopiesOfTheBook)
+                .reduce(0, Integer::sum);
     }
 
     public Copy getResult() {
@@ -98,7 +123,7 @@ public class Provider extends AggregateRoot<ProviderId> {
     }
 
     public double totalPriceForAllCopiesOfOneBook(Integer quantity, LiteraryWork copy) {
-        if(quantity > copy.getCopies()) {
+        if(quantity > copy.getCopiesOfTheBook()) {
             throw new IllegalArgumentException("quantity exceeds than copy in stock");
         }
         if(quantity > 10) {

@@ -5,11 +5,12 @@ import com.penguin.model.provider.values.copy.*;
 
 public interface CopyFactory {
     Copy createCopy(
-            Type type,
+            BookType bookType,
             Title title,
             Author author,
-            Stock stock,
-            PublicationYear publicationYear,
+            AreaOfKnowledge areaOfKnowledge,
+            NumOfPages numOfPages,
+            CopiesOfTheBook copiesOfTheBook,
             Price price
     );
 }

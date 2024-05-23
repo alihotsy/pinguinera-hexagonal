@@ -1,21 +1,25 @@
 package com.penguin.model.provider.dto;
 
+import com.penguin.model.provider.values.copy.*;
+
 public class LiteraryWork {
     private String id;
-    private String type;
+    private String bookType;
     private String title;
     private String author;
-    private Integer copies;
-    private Integer yearOfPublication;
+    private String areaOfKnowledge;
+    private Integer numOfPages;
+    private Integer copiesOfTheBook;
     private Double price;
 
-    public LiteraryWork(String id, String type, String title, String author, Integer copies, Integer yearOfPublication, Double price) {
+    public LiteraryWork(String id, String bookType, String title, String author, String areaOfKnowledge, Integer numOfPages, Integer copiesOfTheBook, Double price) {
         this.id = id;
-        this.type = type;
+        this.bookType = bookType;
         this.title = title;
         this.author = author;
-        this.copies = copies;
-        this.yearOfPublication = yearOfPublication;
+        this.areaOfKnowledge = areaOfKnowledge;
+        this.numOfPages = numOfPages;
+        this.copiesOfTheBook = copiesOfTheBook;
         this.price = price;
     }
 
@@ -28,14 +32,6 @@ public class LiteraryWork {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
     }
 
     public String getTitle() {
@@ -54,27 +50,43 @@ public class LiteraryWork {
         this.author = author;
     }
 
-    public Integer getCopies() {
-        return copies;
-    }
-
-    public void setCopies(Integer copies) {
-        this.copies = copies;
-    }
-
-    public Integer getYearOfPublication() {
-        return yearOfPublication;
-    }
-
-    public void setYearOfPublication(Integer yearOfPublication) {
-        this.yearOfPublication = yearOfPublication;
-    }
-
     public Double getPrice() {
         return price;
     }
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    public String getBookType() {
+        return bookType;
+    }
+
+    public void setBookType(String bookType) {
+        this.bookType = bookType;
+    }
+
+    public String getAreaOfKnowledge() {
+        return areaOfKnowledge;
+    }
+
+    public void setAreaOfKnowledge(String areaOfKnowledge) {
+        this.areaOfKnowledge = areaOfKnowledge;
+    }
+
+    public Integer getNumOfPages() {
+        return numOfPages;
+    }
+
+    public void setNumOfPages(Integer numOfPages) {
+        this.numOfPages = numOfPages;
+    }
+
+    public Integer getCopiesOfTheBook() {
+        return copiesOfTheBook;
+    }
+
+    public void setCopiesOfTheBook(Integer copiesOfTheBook) {
+        this.copiesOfTheBook = copiesOfTheBook;
     }
 }

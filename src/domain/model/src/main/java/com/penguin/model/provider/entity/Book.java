@@ -4,19 +4,20 @@ import com.penguin.model.provider.values.copy.*;
 
 public class Book extends Copy{
 
-    private Book(Type type,Title title, Author author, Stock stock, Price price, PublicationYear publicationYear) {
-        super(type,title, author, stock, price, publicationYear);
+    private Book(BookType bookType, Title title, Author author, AreaOfKnowledge areaOfKnowledge,NumOfPages numOfPages ,CopiesOfTheBook copiesOfTheBook, Price price) {
+        super(bookType,title, author, areaOfKnowledge,numOfPages ,copiesOfTheBook, price);
     }
 
     public static Book from(
-            Type type,
+            BookType bookType,
             Title title,
             Author author,
-            Stock stock,
-            PublicationYear publicationYear,
+            AreaOfKnowledge areaOfKnowledge,
+            NumOfPages numOfPages,
+            CopiesOfTheBook copiesOfTheBook,
             Price price
     ){
-        return new Book(type,title, author, stock, price, publicationYear);
+        return new Book(bookType,title, author, areaOfKnowledge,numOfPages ,copiesOfTheBook, price);
     }
 
     @Override

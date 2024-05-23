@@ -9,6 +9,9 @@ public class Bill {
     private List<LiteraryWork> copies;
     private double price;
 
+    public Bill() {
+    }
+
     public Bill(LocalDate registeredAt, List<LiteraryWork> copies, double price) {
         this.registeredAt = registeredAt;
         this.copies = copies;

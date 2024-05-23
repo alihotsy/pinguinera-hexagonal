@@ -33,24 +33,27 @@ public class SaveCopyUseCase extends CommandUseCase<SaveBookCommand> {
                     System.out.println("Eventos: "+events);
                     ProviderId providerId = ProviderId.of(command.getBookStoreQuoteId());
                     Provider provider;
+
                     if (events.isEmpty()) {
                         provider = new Provider(
                                 new Title(command.getTitle()),
                                 new Author(command.getAuthor()),
-                                new Stock(command.getStock()),
-                                new PublicationYear(command.getPublicationYear()),
+                                new AreaOfKnowledge(command.getAreaOfKnowledge()),
+                                new NumOfPages(command.getNumOfPages()),
+                                new CopiesOfTheBook(command.getCopiesOfTheBook()),
                                 new Price(command.getPrice()),
-                                new Type(command.getType())
+                                new BookType(command.getBookType())
                         );
                     } else {
                         provider = Provider.from(providerId, events);
                         provider.addCopy(
                                 new Title(command.getTitle()),
                                 new Author(command.getAuthor()),
-                                new Stock(command.getStock()),
-                                new PublicationYear(command.getPublicationYear()),
+                                new AreaOfKnowledge(command.getAreaOfKnowledge()),
+                                new NumOfPages(command.getNumOfPages()),
+                                new CopiesOfTheBook(command.getCopiesOfTheBook()),
                                 new Price(command.getPrice()),
-                                new Type(command.getType())
+                                new BookType(command.getBookType())
                         );
                     }
                     return provider.getUncommittedChanges();
