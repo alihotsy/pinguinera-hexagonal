@@ -30,6 +30,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/book")
+@CrossOrigin(origins = "http://localhost:4200")
 public class RouterRest {
 
     private final SaveCopyUseCase saveCopyUseCase;
@@ -50,9 +51,10 @@ public class RouterRest {
         this.copyFactory = copyFactory;
     }
 
-    @GetMapping("/get-all")
-    public Mono<ResponseEntity<List<LiteraryWork>>> getAllBooks(@RequestBody GetAllBooksCommand getAllBooksCommand) {
-        return getAllBooksUseCase.apply(Mono.just(getAllBooksCommand))
+    @GetMapping("/get-all/{bookStoreQuoteId}")
+    public Mono<ResponseEntity<List<LiteraryWork>>> getAllBooks(@PathVariable String bookStoreQuoteId) {
+        GetAllBooksCommand booksCommand = new GetAllBooksCommand(bookStoreQuoteId);
+        return getAllBooksUseCase.apply(Mono.just(booksCommand))
                 .map(domain -> {
                     String uuid = domain.uuid.toString();
                     BookSaved bookSaved = (BookSaved) domain;
